@@ -59,6 +59,7 @@ class News extends Base {
         ]);
     }
 
+    // 添加文章
     public function add() {
         if( request()->isPost() ) {
             $data = input('post.');
@@ -81,6 +82,20 @@ class News extends Base {
             ]);
         }
     }
+
+    public function edit() {
+        if( request()->isPost() ) {
+
+        } else {
+            $id = input('get.id');
+            $news_info = model('News')->get(['id' => $id]);
+            if( !$news_info ) {
+
+            }
+        }
+    }
+
+
 
 
 }
