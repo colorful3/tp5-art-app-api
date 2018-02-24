@@ -15,4 +15,6 @@ return [
     ],
     'app_sign_time' => 10,   // sign有效时间
     'app_sign_cache_time' => 20,   // sign有效时间
+    'success' => 1,
+    'error' => 0,
 ];

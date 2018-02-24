@@ -56,16 +56,17 @@ class IAuth {
             return false;
         }
 
-        // 时间有效性校验
-        if( time() - ceil($arr['time'] / 1000) > config('app.app_sign_time') ) {
-            return false;
-        }
+        if(!config('app_debug')) {
+            // 时间有效性校验
+            if (time() - ceil($arr['time'] / 1000) > config('app.app_sign_time')) {
+                return false;
+            }
 
-        // 唯一性判断
-        if( Cache::get( $data['sign'] ) ) {
-            return false;
+            // 唯一性判断
+            if (Cache::get($data['sign'])) {
+                return false;
+            }
         }
-
         return true;
     }
 }

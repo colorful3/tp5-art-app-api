@@ -20,6 +20,14 @@ class Common extends Controller {
     // header头数据
     public $headers = '';
 
+    // 当前页
+    public $page = 1;
+
+    // 每页显示条数
+    public $page_size = 10;
+    // 分页的偏移量
+    public $offset = 0;
+
     /**
      * 初始化方法
      */
@@ -68,6 +76,32 @@ class Common extends Controller {
         $str = 'i3yvWajKiytzc2WF+oCPn1agkJWc2LG0/k3yybYdW1vmzhakfsSsptomufDqzj0J';
         // echo IAuth::setSign($data);exit;
         echo (new OpenSSLAES(config('app.aeskey')))->decrypt($str);exit;
+    }
+
+    /**
+     * @param array $news
+     * @return array
+     */
+    protected function getDealNews($news=[]) {
+        if(empty($news)) {
+            return [];
+        }
+        $cats = config('cat.lists');
+        foreach($news as $key=>$new) {
+            $news[$key]['catname'] = $cats[$new['catid']] ?
+                $cats[$new['catid']] : '-';
+        }
+        return $news;
+    }
+
+    /**
+     * 获取分页的相关参数
+     * @param $data
+     */
+    public function getPageParams($data) {
+        $this->page = !empty($data['page']) ? intval($data['page']) : 1;
+        $this->page_size = !empty($data['page_size']) ? $data['page_size'] : config('paginate.list_rows');
+        $this->offset = ( $this->page - 1 ) * $this->page_size;
     }
 
 }
