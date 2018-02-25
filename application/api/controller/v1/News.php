@@ -41,6 +41,40 @@ class News extends Common {
             'list' => $this->getDealNews($news),
         ];
         return show(1, 'ok', $result, 200);
+    }
+
+    /**
+     * 新闻详情接口
+     */
+    public function read() {
+        // 详情页面两种方式： 1、h5页面 2、接口的形式
+
+        $id = input('param.id', 0, 'intval');
+        if( empty($id) ) {
+            return new ApiException('you need to transfer id', 404);
+        }
+
+        // 通过id 获取数据表里的数据
+        try {
+            $news = model('News')->get($id);
+        } catch (\Exception $e) {
+            return show(0, $e->getMessage() );
+        }
+
+        if( empty($news) || $news->status != config('code.status_normal') ) {
+            return new ApiException('不存在该新闻', 404);
+        }
+
+        try {
+            // 增加阅读数
+            model('news')->where(['id' => $id])->setInc('read_count');
+        } catch (\Exception $e) {
+            return show(0, $e->getMessage() );
+        }
+        $cats = config('cat.lists');
+        $news->catname = $cats[$news->id];
+        // 返回详情数据
+        return show( config('code.success'), 'ok', $news, 200 );
 
     }
 
