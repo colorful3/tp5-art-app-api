@@ -6,28 +6,21 @@
  * Time:下午12:35
  */
 namespace app\api\controller;
-use app\common\lib\exception\ApiException;
+
 use think\Controller;
+use app\common\lib\Alidayu;
 
-class Test extends Common {
 
-    // index方法
-    public function index() {
-        return [
-            'name' => 'hello'
-        ];
-    }
 
-    // 更新方法
-    public function update($id) {
-        $data = input('put.');
-        return $data;
-    }
+class Test extends Controller {
 
-    // 增加方法
-    public function save() {
-        $data = input('post.');
-        print_r($data);exit;
+
+
+
+    public function smsDemo() {
+        $phone = '15731694811';
+        $res = Alidayu::getInstance()->setSmsIdentify($phone);
+        var_dump($res);
     }
 
 }

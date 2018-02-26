@@ -19,6 +19,8 @@ Route::post('test', 'api/test/save');
 Route::get('api/:ver/cat', 'api/:ver.cat/read');
 // 首页接口路由
 Route::get('api/:ver/index', 'api/:ver.index/index');
+// 初始化接口
+Route::get('api/:ver/init', 'api/:ver.index/init');
 
 // 新闻列表页
 Route::resource('api/:ver/news', 'api/:ver.news');
