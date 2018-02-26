@@ -18,7 +18,7 @@ class Test extends Controller {
 
 
     public function smsDemo() {
-        $phone = '15731694811';
+        $phone = '***';
         $res = Alidayu::getInstance()->setSmsIdentify($phone);
         var_dump($res);
     }
