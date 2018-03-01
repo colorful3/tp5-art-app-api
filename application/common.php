@@ -66,3 +66,16 @@ function show( $status, $message, $data = [], $http_code=200 ) {
 
     return json( $data, $http_code );
 }
+
+/**
+ * 判断是否是手机号
+ * @param $mobile
+ * @return bool
+ */
+function is_mobile( $mobile ) {
+    if(preg_match("/^1[34578]{1}\d{9}$/",$mobile)){
+        return true;
+    }else{
+        return false;
+    }
+}

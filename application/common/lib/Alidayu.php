@@ -1,6 +1,6 @@
 <?php
 /**
- * Alidayu.php  阿里大鱼发送短信基础类库（使用单利模式）
+ * Alidayu.php  阿里大于发送短信基础类库（使用单利模式）
  * Created By Colorful
  * Date:2018/2/26
  * Time:下午1:38
@@ -12,12 +12,16 @@ use Aliyun\Core\Config;
 use Aliyun\Core\Profile\DefaultProfile;
 use Aliyun\Core\DefaultAcsClient;
 use Aliyun\Api\Sms\Request\V20170525\SendSmsRequest;
-
+use think\Cache;
+use think\Log;
 
 Config::load();
 
 
 class Alidayu {
+
+    // 定义日志表示
+    const LOG_TPL = 'alidayu:';
 
     // 1、私有静态变量保存全局实例
     private static $_instance = null;
@@ -36,7 +40,6 @@ class Alidayu {
         if( is_null( self::$_instance ) ) {
             self::$_instance = new self();
         }
-
         return self::$_instance;
     }
 
@@ -63,7 +66,6 @@ class Alidayu {
         // 服务结点
         $endPointName = "cn-hangzhou";
 
-
         if(static::$acsClient == null) {
 
             //初始化acsClient,暂不支持region化
@@ -84,10 +86,15 @@ class Alidayu {
      * @return bool
      */
     public function setSmsIdentify($phone = 0) {
-        // todo 判断phone
-
-        // 生成验证码
+        // Log::write(self::LOG_TPL . 'setsms---start');
+        // 判断是否是手机号
+        if( !is_mobile($phone) ) {
+            return false;
+        }
+        // 生成随机验证码
         $code = rand(1000, 9999);
+        // 记录日志
+        Log::write('');
         try {
             // 初始化SendSmsRequest实例用于设置发送短信的参数
             $request = new SendSmsRequest();
@@ -114,17 +121,35 @@ class Alidayu {
             $request->setSmsUpExtendCode("1234567");
 
         } catch (\Exception $e) {
-            // todo
+            // 记录日志
+            Log::write(self::LOG_TPL . 'set----' . $e->getMessage());
+            return false;
         }
 
         // 发起访问请求
         $acsResponse = static::getAcsClient()->getAcsResponse($request);
 
         if($acsResponse->Message === 'OK') {
+            // 把验证码保存到文件缓存中
+            Cache::set($phone, $code, config('aliyun.identify_time'));
             return true;
         } else {
-
+            // 记录日志
+            Log::write( self::LOG_TPL . 'set----' . json_encode($acsResponse) );
         }
         return false;
     }
+
+    /**
+     * 根据手机号获得验证码
+     * @param $phone
+     * @return bool|mixed
+     */
+    public function checkSmsIdentify($phone=0) {
+        if(!$phone) {
+            return false;
+        }
+        return Cache::get($phone);
+    }
+
 }
