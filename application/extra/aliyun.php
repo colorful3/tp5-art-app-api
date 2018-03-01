@@ -7,7 +7,7 @@
  */
 return [
     'appKey' => 'LTAIjrartosjzsZ0',
-    'secretKey' => '8Q6z2AsiUZoIYs4ya8BSfEsn75YEBR',
+    'secretKey' => '8Q6z2AsiUZoIYs4ya8BSfEsn75YEBR1',
     'signName' => '礼玉轩珠宝',
     'templateCode' => 'SMS_80315038',
     'identify_time' => 120,  // 验证码有效时间
