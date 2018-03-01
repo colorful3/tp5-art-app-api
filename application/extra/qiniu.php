@@ -7,8 +7,8 @@
  * @desc 七牛云配置文件
  */
 return [
-    'ak' => 'rnowBapGRXlnlqhw8eDqmisqeC00BQyBwSfKPNm0',
-    'sk' => 'MwAYLzmXeU_DfZ7mHc5x4o4h5zU8o_Gzmb8x2BX7',
+    'ak' => '*****',
+    'sk' => '****',
     'bucket' => 'capp',
-    'image_url' => 'http://p4ccw9uen.bkt.clouddn.com',
+    'image_url' => '***',
 ];
