@@ -17,4 +17,5 @@ return [
     'app_sign_cache_time' => 20,   // sign有效时间
     'success' => 1,
     'error' => 0,
+    'login_time_out_day' => 7,  // 登录（token）失效时间
 ];

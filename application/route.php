@@ -30,3 +30,6 @@ Route::get('api/:ver/rank', 'api/:ver.rank/index');
 
 // 短信验证码相关
 Route::resource('api/:ver/identify', 'api/:ver.identify');
+
+// 登录路由
+Route::post('api/:ver/login', 'api/:ver.login/save');
