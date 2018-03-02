@@ -34,5 +34,11 @@ Route::resource('api/:ver/identify', 'api/:ver.identify');
 // 登录路由
 Route::post('api/:ver/login', 'api/:ver.login/save');
 
-// 用户路由
-Route::post('api/:ver/user', 'api/:ver.user/save');
+// 个人中心路由
+Route::resource('api/:ver/user', 'api/:ver.user');
+
+// 验证用户昵称唯一性路由
+Route::post('api/:ver/user/checkUsername', 'api/:ver.user/checkUsername');
+
+// 图片上传路由
+Route::post('api/:ver/image', 'api/:ver.image/save');
