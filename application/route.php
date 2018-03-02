@@ -33,3 +33,6 @@ Route::resource('api/:ver/identify', 'api/:ver.identify');
 
 // 登录路由
 Route::post('api/:ver/login', 'api/:ver.login/save');
+
+// 用户路由
+Route::post('api/:ver/user', 'api/:ver.user/save');

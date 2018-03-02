@@ -10,5 +10,5 @@ return [
     'secretKey' => '8Q6z2AsiUZoIYs4ya8BSfEsn75YEBR',
     'signName' => '礼玉轩珠宝',
     'templateCode' => 'SMS_80315038',
-    'identify_time' => 120,  // 验证码有效时间
+    'identify_time' => 300,  // 验证码有效时间
 ];
