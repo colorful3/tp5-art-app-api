@@ -67,7 +67,7 @@ class News extends Common {
 
         try {
             // 增加阅读数
-            model('news')->where(['id' => $id])->setInc('read_count');
+            model('News')->where(['id' => $id])->setInc('read_count');
         } catch (\Exception $e) {
             return show(0, $e->getMessage() );
         }

@@ -33,6 +33,7 @@ Route::resource('api/:ver/identify', 'api/:ver.identify');
 
 // 登录路由
 Route::post('api/:ver/login', 'api/:ver.login/save');
+Route::post('api/:ver/logout', 'api/:ver.login/logout');
 
 // 个人中心路由
 Route::resource('api/:ver/user', 'api/:ver.user');
@@ -42,3 +43,15 @@ Route::post('api/:ver/user/checkUsername', 'api/:ver.user/checkUsername');
 
 // 图片上传路由
 Route::post('api/:ver/image', 'api/:ver.image/save');
+
+// 点赞路由
+Route::post('api/:ver/upvote', 'api/:ver.upvote/save');
+// 取消点赞
+Route::delete('api/:ver/upvote', 'api/:ver.upvote/delete');
+// 获取是否点赞
+Route::get('api/:ver/upvote/:id', 'api/:ver.upvote/read');
+
+// 评论
+Route::post('api/:ver/comment', 'api/:ver.comment/save');
+
+Route::get('api/:ver/comment/:id', 'api/:ver.comment/read');

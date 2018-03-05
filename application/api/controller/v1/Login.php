@@ -27,15 +27,19 @@ class Login extends Common {
         if( empty( $params['phone'] ) || !is_mobile($params['phone']) ) {
             return show( config('code.error'), '手机号不合法', [],  404 );
         }
-        if( empty( $params['code'] ) ) {
-            return show( config('code.error'), '验证码不合法', [], 404 );
+        if( empty( $params['code'] ) && empty( $params['password'] ) ) {
+            return show( config('code.error'), '手机短信验证码或密码不正确', [], 404 );
         }
-        // 判断code
-        $code = Alidayu::getInstance()->checkSmsIdentify( $params['phone'] );
-        // TODO 客户端加密，服务端对客户端传递过来的code解密
-        if( $code != $params['code'] ) {
-            return show( config('code.error'), '验证码错误', [], 404 );
+        if(!empty($params['code'])) {
+            // 验证码登录
+            // 判断code
+            $code = Alidayu::getInstance()->checkSmsIdentify($params['phone']);
+            // TODO 客户端加密，服务端对客户端传递过来的code解密
+            if ($code != $params['code']) {
+                return show(config('code.error'), '验证码错误', [], 404);
+            }
         }
+
         // 设置token
         $token = IAuth::setAppLoginToken($params['phone']);
         // 设置要操作的data
@@ -47,6 +51,11 @@ class Login extends Common {
         $user = User::get(['phone' => $params['phone']]);
         $id = 0;
         if( $user && $user->status == 1 ) {
+            if( !empty($params['password'] )) {
+                if( IAuth::setPassword( $params['password'] ) != $user->password ) {
+                    return show(config('code.error'), '密码错误', [], 403);
+                }
+            }
             // 不是第一次登录，更新token
             try {
                 $id = model('User')->save($data, [
@@ -56,15 +65,20 @@ class Login extends Common {
                 // TODO
             }
         } else {
-            // 第一次登录，注册用户数据
-            $data['username'] = 'CC粉丝' . $params['phone'];
-            $data['status'] = 1;
-            $data['phone'] = $params['phone'];
-            // 插入数据
-            try {
-                $id = model('User')->add($data);
-            } catch (\Exception $e) {
-                // return show();
+            if(!empty($params['code'])) {
+                // 第一次登录，注册用户数据
+                $data['username'] = 'CC粉丝' . $params['phone'];
+                $data['status'] = 1;
+                $data['phone'] = $params['phone'];
+                // 插入数据
+                try {
+                    $id = model('User')->add($data);
+                } catch (\Exception $e) {
+                    // return show();
+                }
+            } else {
+                // 密码登录
+                return show(config('code.error'), '用户不存在', [], 403);
             }
         }
         // 对token进行加密
@@ -77,6 +91,22 @@ class Login extends Common {
             return show( config('code.success'), 'OK', $result );
         } else {
             return show( config('code.error'), '登录失败', [], 403 );
+        }
+    }
+
+    /**
+     * app退出登录接口
+     */
+    public function logout() {
+        $phone = input('post.phone');
+        if( empty($phone) ) {
+            return show( config('code.error'), '参数传递不合法', [], 403 );
+        }
+        $res = model('User')->save(['token' => '', 'time_out' => 0], ['phone' => $phone]);
+        if(!$res) {
+            return show( config('code.error'), '退出失败', [], 403 );
+        } else {
+            return show(config('code.success'), '退出成功');
         }
     }
 
