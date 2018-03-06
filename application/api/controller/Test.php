@@ -8,6 +8,7 @@
 namespace app\api\controller;
 
 use app\common\lib\IAuth;
+use app\common\lib\OpenSSLAES;
 use think\Controller;
 use app\common\lib\Alidayu;
 
@@ -15,6 +16,11 @@ use app\common\lib\Alidayu;
 
 class Test extends Controller {
 
+    public function getAes() {
+        $str = (new OpenSSLAES(config('app.aeskey')))->decrypt('i3yvWajKiytzc2WF+oCPn1agkJWc2LG0/k3yybYdW1vmzhakfsSsptomufDqzj0J');
+        // $str = (new OpenSSLAES(config('app.aeskey')))->decrypt('gYE1CDqpP+SBwib2MoM6tEActeEm0Ef6bTKjaWsiqAc6P7rjj+LJBqybAewnWkaF');
+        halt($str);
+    }
 
     public function smsDemo() {
         $phone = '15731666949';

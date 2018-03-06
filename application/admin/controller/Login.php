@@ -6,7 +6,6 @@
  * Time:下午2:21
  */
 namespace app\admin\controller;
-use think\Controller;
 use app\common\lib\IAuth;
 use think\Exception;
 

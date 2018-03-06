@@ -8,7 +8,8 @@
 
 return [
     'password_salt' => '!@#$%^&*',  // 密码加密盐
-    'aeskey' => 'ccapp!@#$%^&*()',  // ase加密盐，服务端和客户端必须保持一致
+    // 'aeskey' => 'ccapp!@#$%^&*()',  // ase加密盐，服务端和客户端必须保持一致
+    'aeskey' => 'sgg45747ss223455',  // ase加密盐，服务端和客户端必须保持一致
     'app_types' => [
         'ios',
         'android',
