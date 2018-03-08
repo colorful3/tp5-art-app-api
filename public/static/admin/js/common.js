@@ -81,3 +81,15 @@ function capp_status(obj) {
        })
     });
 }
+
+function article_edit(title, url) {
+    layer.open({
+        type: 2,
+        title: title,
+        shadeClose: true,
+        shade: false,
+        maxmin: true, //开启最大化最小化按钮
+        area: ['893px', '600px'],
+        content: url,
+    });
+}

@@ -85,13 +85,25 @@ class News extends Base {
 
     public function edit() {
         if( request()->isPost() ) {
-
+            $data = input('post.');
+            // todo check the data, validate
+            $data['update_time'] = time();
+            $id = model('News')->save($data, ['id' => $data['id']]);
+            if( $id ) {
+                return $this->result(['jump_url' => url('news/index')],1, 'OK' );
+            } else {
+                return $this->result('', 0, '修改失败');
+            }
         } else {
             $id = input('get.id');
             $news_info = model('News')->get(['id' => $id]);
             if( !$news_info ) {
-
+                return $this->error('error', 'news/index');
             }
+            return $this->fetch('', [
+                'info' => $news_info,
+                'cats' => config('cat.lists'),
+            ]);
         }
     }
 
